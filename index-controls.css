@@ -1,0 +1,25 @@
+
+.container {
+	margin-left: 5%;
+	margin-right: 5%;
+	margin-top: 5%;
+}
+
+.body-banner {
+	padding: 15%;
+	text-align: cneter;
+	background:  #ccffcc;
+
+}
+
+.body-cols {
+
+	background: #ffffcc;
+	margin: 3px;
+	margin-left: 3px;
+	margin-right: 3px; 
+	padding: 5px;
+}
+.body-form {
+	padding: 3px;
+}
