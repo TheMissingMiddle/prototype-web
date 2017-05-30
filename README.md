@@ -7,3 +7,7 @@ web prototype (not using ionic)
  - Ease of use
  - Complex things get done in client-side logic
  - Minimal jQuery usage
+
+## Some Previews
+### index.html
+![index.html photo](https://github.com/TheMissingMiddle/prototype-web/raw/master/TMM-index.html-preview.png)
