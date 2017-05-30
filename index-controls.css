@@ -17,9 +17,20 @@
 	background: #ffffcc;
 	margin: 3px;
 	margin-left: 3px;
-	margin-right: 3px; 
+	margin-right: 3px;
 	padding: 5px;
 }
 .body-form {
 	padding: 3px;
+}
+
+div.form-warnings {
+     padding: 3px;
+		 margin: 3px;
+     color: #ffffff;
+     background: #cc0000;
+     border: 1px;
+		 border-left: 13px;
+		 border-left-color: #ccff00;
+     border-radius: 5%;
 }

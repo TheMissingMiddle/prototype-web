@@ -44,7 +44,7 @@
                <input type="password" class="form-control" id="LogInPassword" v-model="logInPasswordModel" placeholder="Password">
               </div>
               <p class="help-block">Have no account? <a id="register-button" v-on:click="switchToRegistration">Register one</a>.</p>
-              <div id="register-warnings">{{ logInWarningText }}</div>
+              <div id="register-warnings" class="form-warnings" v-if="hasWarning">{{ logInWarningText }}</div>
               <button type="submit" class="btn btn-default">Submit</button>
             </form>
   	 </div>
@@ -65,7 +65,7 @@
                <input type="password" class="form-control" id="RepeatRegistrationPassword" v-model="repeatRegistrationPasswordModel" placeholder="Password">
               </div>
               <p class="help-block">Have an account already? <a id="logIn-button" v-on:click="switchToLogIn">Log in</a>.</p>
-              <div id="register-warnings">{{ registrationWarningText }}</div>
+              <div id="register-warnings" class="form-warnings" v-if="hasWarning">{{ registrationWarningText }}</div>
               <button type="submit" class="btn btn-default">Register</button>
             </form>
          </div>
@@ -80,38 +80,45 @@
  <script>
  var vueSettings = {
   el: '#form-action-control',
-  data: { isLogIn: true, logInEmailModel: '', logInPasswordModel: '', registrationEmailModel: '',
+  data: { isLogIn: true, hasWarning: false, logInEmailModel: '', logInPasswordModel: '', registrationEmailModel: '',
    registrationPasswordModel: '', repeatRegistrationPasswordModel: '', registrationWarningText: '', logInWarningText: '' },
   methods: {
     switchToLogIn: function () { this.isLogIn = true; },
     switchToRegistration: function () { this.isLogIn = false; },
     doRegisterAction: function () {
+      this.hasWarning=false;
       // do check
       let email = this.registrationEmailModel;
       let password1 = this.registrationPasswordModel;
       let password2 = this.repeatRegistrationPasswordModel;
       if(email == '' || password1 == '' || password2 == '' || email == undefined || password1 == undefined || password2 == undefined) {
+        this.hasWarning=true;
         this.registrationWarningText = 'Error: One or more of the required fields is left blank.';
         return;
       }
       if(password1 !== password2) {
+        hasWarning=true;
         this.registrationWarningText = 'Error: Passwords do not match.';
         return;
       }
       // success
       // TODO implement action
+      this.hasWarning=true;
       this.registrationWarningText = "Successfully registered. Please check your email address.";
     },
     doLogInAction: function () {
+      this.hasWarning=false;
       // do checks
       let email = this.logInEmailModel;
       let password = this.logInPasswordModel;
       if(email==''||password==''||email==undefined||password==undefined) {
+        this.hasWarning=true;
         this.logInWarningText = 'Error: one or more of the required fields is left blank.';
         return;
       }
       // Success
       // TODO implement action
+      this.hasWarning=true;
       this.logInWarningText = 'LogIn success!';
     }
   }
