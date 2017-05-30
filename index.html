@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
   <link rel="stylesheet" href="index-controls.css">
+  <script src="https://unpkg.com/vue"></script>
 
   <!--jquery-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -22,32 +23,99 @@
     </div>
  <div class="container">
   <div class="row">
+
   	<div class="col-md-6">
-  	 <div class="body-cols">
+  	 <div class="body-cols" v-if="isLogIn">
   		<p class="lead">News</p>
   	 </div>
   	</div>
-  	<div class="col-md-6">
-  	 <div class="body-cols">
-  		<p class="lead">Log In</p>
-  		<form class="body-form">
-         <div class="form-group">
-           <label for="exampleInputEmail1">Email address</label>
-           <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
-         </div>
-         <div class="form-group">
-           <label for="exampleInputPassword1">Password</label>
-           <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-         </div>
-         <p class="help-block">Have no account? <a href="register.html">Register one</a>.</p>
-         <button type="submit" class="btn btn-default">Submit</button> 
-         </form>
+
+  	<div class="col-md-6" id="form-action-control">
+
+  	 <div class="body-cols" v-if="isLogIn">
+            <p class="lead">Log In</p>
+  	    <form class="body-form" v-on:submit.prevent="doLogInAction">
+              <div class="form-group">
+               <label for="LogInEmail">Email address</label>
+               <input type="email" class="form-control" id="LogInEmail" v-model="logInEmailModel" placeholder="Email">
+              </div>
+              <div class="form-group">
+               <label for="LogInPassword">Password</label>
+               <input type="password" class="form-control" id="LogInPassword" v-model="logInPasswordModel" placeholder="Password">
+              </div>
+              <p class="help-block">Have no account? <a id="register-button" v-on:click="switchToRegistration">Register one</a>.</p>
+              <div id="register-warnings">{{ logInWarningText }}</div>
+              <button type="submit" class="btn btn-default">Submit</button>
+            </form>
   	 </div>
-  	</div>
+
+         <div class="body-cols" v-if="!isLogIn">
+            <p class="lead">Register for The Missing Middle</p>
+            <form class="body-form" v-on:submit.prevent="doRegisterAction">
+              <div class="form-group">
+               <label for="RegistrationEmail">Email address</label>
+               <input type="email" class="form-control" id="RegistrationEmail" v-model="registrationEmailModel" placeholder="Email">
+              </div>
+              <div class="form-group">
+               <label for="RegistrationPassword">Password</label>
+               <input type="password" class="form-control" id="RegistrationPassword" v-model="registrationPasswordModel" placeholder="Password">
+              </div>
+             <div class="form-group">
+               <label for="RegistrationRepeatPassword">Repeat Password</label>
+               <input type="password" class="form-control" id="RepeatRegistrationPassword" v-model="repeatRegistrationPasswordModel" placeholder="Password">
+              </div>
+              <p class="help-block">Have an account already? <a id="logIn-button" v-on:click="switchToLogIn">Log in</a>.</p>
+              <div id="register-warnings">{{ registrationWarningText }}</div>
+              <button type="submit" class="btn btn-default">Register</button>
+            </form>
+         </div>
+
+  	</div><!--col-md-6-->
   </div><!--row-->
-  <br>
+  <br> <br>
   <hr>
   <p class="lead">Copyright &copy; 2017 The Missing Middle Project and its Affiliated Authors. All rights reserved.</p>
   </div><!--container-->
  </body>
+ <script>
+ var vueSettings = {
+  el: '#form-action-control',
+  data: { isLogIn: true, logInEmailModel: '', logInPasswordModel: '', registrationEmailModel: '',
+   registrationPasswordModel: '', repeatRegistrationPasswordModel: '', registrationWarningText: '', logInWarningText: '' },
+  methods: {
+    switchToLogIn: function () { this.isLogIn = true; },
+    switchToRegistration: function () { this.isLogIn = false; },
+    doRegisterAction: function () {
+      // do check
+      let email = this.registrationEmailModel;
+      let password1 = this.registrationPasswordModel;
+      let password2 = this.repeatRegistrationPasswordModel;
+      if(email == '' || password1 == '' || password2 == '' || email == undefined || password1 == undefined || password2 == undefined) {
+        this.registrationWarningText = 'Error: One or more of the required fields is left blank.';
+        return;
+      }
+      if(password1 !== password2) {
+        this.registrationWarningText = 'Error: Passwords do not match.';
+        return;
+      }
+      // success
+      // TODO implement action
+      this.registrationWarningText = "Successfully registered. Please check your email address.";
+    },
+    doLogInAction: function () {
+      // do checks
+      let email = this.logInEmailModel;
+      let password = this.logInPasswordModel;
+      if(email==''||password==''||email==undefined||password==undefined) {
+        this.logInWarningText = 'Error: one or more of the required fields is left blank.';
+        return;
+      }
+      // Success
+      // TODO implement action
+      this.logInWarningText = 'LogIn success!';
+    }
+  }
+ };
+ var controller = new Vue(vueSettings);
+ </script>
 </html>
