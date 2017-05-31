@@ -89,11 +89,15 @@
   </div><!--container-->
  </body>
  <script>
+ var config = {
+ 	'endpoint': 'http://localhost:3000/'
+ }
+
  var vueSettings = {
   el: '#form-action-control',
   data: { isLogIn: true, hasWarning: false, logInEmailModel: '', logInPasswordModel: '', registrationEmailModel: '',
    registrationPasswordModel: '', repeatRegistrationPasswordModel: '', registrationWarningText: '', logInWarningText: '',
-  registrationFirstNameModel: '', registrationLastNameModel: ''},
+  registrationFirstNameModel: '', registrationLastNameModel: '', jwtToken: ''},
   methods: {
     switchToLogIn: function () { this.isLogIn = true; },
     switchToRegistration: function () { this.isLogIn = false; },
@@ -103,20 +107,40 @@
       let email = this.registrationEmailModel;
       let password1 = this.registrationPasswordModel;
       let password2 = this.repeatRegistrationPasswordModel;
-      if(email == '' || password1 == '' || password2 == '' || email == undefined || password1 == undefined || password2 == undefined) {
+      let userFirstName = this.registrationFirstNameModel;
+      let userLastName = this.registrationLastNameModel;
+      if(email == '' || password1 == '' || password2 == '' || email == undefined || password1 == undefined || password2 == undefined
+        || userFirstName == '' || userLastName == '' || userFirstName == undefined || userLastName == undefined) {
         this.hasWarning=true;
         this.registrationWarningText = 'Error: One or more of the required fields is left blank.';
         return;
       }
       if(password1 !== password2) {
-        hasWarning=true;
+        this.hasWarning=true;
         this.registrationWarningText = 'Error: Passwords do not match.';
         return;
       }
       // success
       // TODO implement action
-      this.hasWarning=true;
-      this.registrationWarningText = "Successfully registered. Please check your email address.";
+      axios.post(endpoint + '/users/register', {
+          email: email,
+	        password: password1,
+	        firstName: userFirstName,
+          lastName: userLastName
+      }).then(function (response) {
+          let parsed = JSON.parse(response);
+          if(parsed['Status'] === 'Success') {
+            this.switchToLogIn();
+            this.hasWarning = true;
+            this.logInWarningText = 'Registration success. Check your email: ' + email;
+          } else {
+            this.hasWarning = true;
+            this.registrationWarningText = 'Error: ' + parsed['Error'] + ' = Please try again.';
+          }
+      }).catch(function (err) {
+        this.hasWarning = true;
+        this.registrationWarningText = 'Server Error: ' + err + ' - Please try again later.';
+      });
     },
     doLogInAction: function () {
       this.hasWarning=false;
