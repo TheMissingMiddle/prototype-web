@@ -93,7 +93,7 @@
  	'endpoint': 'http://localhost:3000/'
  }
 
- var vueSettings = {
+ var vueAuthConfig = {
   el: '#form-action-control',
   data: { isLogIn: true, hasWarning: false, logInEmailModel: '', logInPasswordModel: '', registrationEmailModel: '',
    registrationPasswordModel: '', repeatRegistrationPasswordModel: '', registrationWarningText: '', logInWarningText: '',
@@ -122,7 +122,7 @@
       }
       // success
       // TODO implement action
-      axios.post(endpoint + '/users/register', {
+      axios.post(config.endpoint + '/users/register', {
           email: email,
 	        password: password1,
 	        firstName: userFirstName,
@@ -159,6 +159,7 @@
     }
   }
  };
- var controller = new Vue(vueSettings);
+ var authController = new Vue(vueAuthConfig);
+ 
  </script>
 </html>
