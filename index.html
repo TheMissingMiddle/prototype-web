@@ -13,6 +13,9 @@
   <!--jquery-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+  <!--axios-->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
  </head>
@@ -56,6 +59,14 @@
                <label for="RegistrationEmail">Email address</label>
                <input type="email" class="form-control" id="RegistrationEmail" v-model="registrationEmailModel" placeholder="Email">
               </div>
+	      <div class="form-group">
+		      <label for="RegistrationFirstName">First Name</label>
+		      <input type="text" class="form-control" id="RegistrationFirstName" v-model="registrationFirstNameModel" placeholder="First Name">
+	      </div>
+	      <div class="form-group">
+		      <label for="RegistrationLastName">Last Name</label>
+		      <input type="text" class="form-control" id="RegistrationLastName" v-model="registrationLastNameModel" placeholder="Lst Name">
+	      </div>
               <div class="form-group">
                <label for="RegistrationPassword">Password</label>
                <input type="password" class="form-control" id="RegistrationPassword" v-model="registrationPasswordModel" placeholder="Password">
@@ -81,7 +92,8 @@
  var vueSettings = {
   el: '#form-action-control',
   data: { isLogIn: true, hasWarning: false, logInEmailModel: '', logInPasswordModel: '', registrationEmailModel: '',
-   registrationPasswordModel: '', repeatRegistrationPasswordModel: '', registrationWarningText: '', logInWarningText: '' },
+   registrationPasswordModel: '', repeatRegistrationPasswordModel: '', registrationWarningText: '', logInWarningText: '',
+  registrationFirstNameModel: '', registrationLastNameModel: ''},
   methods: {
     switchToLogIn: function () { this.isLogIn = true; },
     switchToRegistration: function () { this.isLogIn = false; },
