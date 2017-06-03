@@ -26,8 +26,8 @@
  </head>
  <body>
 
-    <div class="body-banner">
-    	<h1> Welcome to The Missing Middle! </h1>
+    <div id='vueBind-bodyBannerController' class="body-banner">
+    	<h1>  </h1>
     </div>
  <div class="container">
  </div>
@@ -39,4 +39,15 @@
   // fetch our auth token
   const jwtToken = getCookie(config.cookieName);
 
+  const vueBodyBannerControllerConfig = {
+    el: '#vueBind-bodyBannerController',
+    data: {
+      message:
+    }
+    methods: {
+      getUserData: function () {
+
+      }
+    }
+  };
  </script>
