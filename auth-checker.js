@@ -11,3 +11,7 @@ function authCheck(isPublic, jumpToPage) {
  	} 
  }
 }
+
+function jumpTo(page) {
+	window.location.href = page;
+}
