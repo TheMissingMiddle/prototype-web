@@ -124,6 +124,7 @@ authCheck(true, config.mainPage);
         this.registrationWarningText = 'Error: Passwords do not match.';
         return;
       }
+      console.log('invoking axios to post...');
       // success
       // TODO implement action
       axios.post(config.endpoint + '/users/register', {
@@ -133,15 +134,18 @@ authCheck(true, config.mainPage);
           lastName: userLastName
       }).then(function (response) {
           let parsed = JSON.parse(response);
+          console.log('register success. switching to login...');
+          console.log(parsed);
           if(parsed['Status'] === 'Success') {
             this.switchToLogIn();
             this.hasWarning = true;
             this.logInWarningText = 'Registration success. Check your email: ' + email;
           } else {
             this.hasWarning = true;
-            this.registrationWarningText = 'Error: ' + parsed['Error'] + ' = Please try again.';
+            this.registrationWarningText = 'Error: ' + parsed['Error'] + ' - Please try again.';
           }
       }).catch(function (err) {
+        console.log('registration failure. err:' + err);
         this.hasWarning = true;
         this.registrationWarningText = 'Server Error: ' + err + ' - Please try again later.';
       });
@@ -159,7 +163,28 @@ authCheck(true, config.mainPage);
       // Success
       // TODO implement action
       this.hasWarning=true;
-      this.logInWarningText = 'LogIn success!';
+      this.logInWarningText = 'Logging you in...';
+      axios.post(config.endpoint + '/users/auth', {
+        email: email,
+        password: password1,
+        firstName: userFirstName,
+        lastName: userLastName
+      }).then(function (response) {
+         let parsed = JSON.parse(response);
+         console.log('login response:' + parsed);
+         if(parsed['Status'] === 'Success') {
+            console.log('login success!');
+            this.logInWarningText = 'Login Success! Redirecting...';
+            setCookie(config.cookieName, parsed['Token'], config.cookieExpirationDays);
+            jumpTo('main.html');
+         } else {
+           console.log('invalid login!');
+           this.logInWarningText = 'Sorry, your login credentials are invalid.';
+         }
+      }).catch(function (err) {
+         console.log('login err: ' + err);
+         this.logInWarningText = 'Server Error: ' + err + ' - Please try again later.';
+      });
     }
   }
  };

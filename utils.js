@@ -21,3 +21,10 @@ function getCookie(cname) {
     }
     return undefined;
 }
+
+function expireCookie(cname) {
+    let d = new Date();
+    d.setTime(d.getTime() - 100000);
+    let expires = d.toUTCString();
+    document.cookie = cname + '=' + ';' + expires + ';path=/';
+}
