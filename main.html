@@ -26,10 +26,16 @@
  </head>
  <body>
 
-    <div id='vueBind-bodyBannerController' class="body-banner">
-    	<h1>  </h1>
-    </div>
  <div class="container">
+  <div class="body-banner" id="vue-body-banner">
+    <h1>Welcome {{ currentUserFirstName }}!</h1>
+
+  </div>
+  <ul class="nav nav-tabs">
+    <li role="presentation" class="active"><a href="#">Home</a></li>
+    <li role="presentation"><a href="#">Profile</a></li>
+    <li role="presentation"><a href="#">Messages</a></li>
+  </ul>
  </div>
  </body>
 
@@ -38,16 +44,24 @@
   // TODO authCheck(false, 'index.html');
   // fetch our auth token
   const jwtToken = getCookie(config.cookieName);
+  console.log('TMM Jwt Token: ' + jwtToken);
 
-  const vueBodyBannerControllerConfig = {
-    el: '#vueBind-bodyBannerController',
+  // vues
+  var vueBodyBannerController = new Vue({
+    el: '#vue-body-banner',
     data: {
-      message:
-    }
+      axiosEndpoint: axios.create({
+        baseURL: config.endpoint,
+        timeout: 1000,
+        headers: {'Authorization': 'JWT ' + jwtToken}
+      }),
+      currentUserFirstName: '',
+      currentUserLastName: ''
+    },
     methods: {
-      getUserData: function () {
-
+      getUserData: function (onSuccess, onError) {
+        this.axiosEndpoint.post('/user-data').then(onSuccess).catch(onError);
       }
     }
-  };
+  });
  </script>
